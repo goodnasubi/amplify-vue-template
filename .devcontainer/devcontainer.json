@@ -1,0 +1,43 @@
+{
+    "name": "amplify-project",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+    "remoteUser": "node",
+    "mounts": [
+        {
+            // "source": "${localWorkspaceFolder}/.aws",
+            "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.aws",
+            "target": "/home/node/.aws",
+            "type": "bind",
+            "consistency": "cached"
+        },
+        {
+            "source": "${localWorkspaceFolderBasename}-node_module",
+            "target": "${containerWorkspaceFolder}/node_modules",
+            "type": "volume"
+        },
+        { // .pnpm-store
+            "source": "${localWorkspaceFolderBasename}-pnpm-store",
+            "target": "${containerWorkspaceFolder}/.pnpm-store",
+            "type": "volume"
+        }
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/aws-cli:1": {},
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode"
+            ]
+        }
+    },
+    "appPort": ["3000:3000","5173:5173"],
+    "postCreateCommand": "sudo chown node node_modules && sudo chown node .pnpm-store",
+    "forwardPorts": [3000, 5173]
+    // "initializeCommand": "mkdir -p ${localWorkspaceFolder}/.aws"
+    // "containerEnv": {
+    //     "AWS_DEFAULT_PROFILE": "example-name"
+    // }
+}
